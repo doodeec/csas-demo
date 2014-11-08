@@ -5,4 +5,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!--server request-->
+    <string name="server_error" formatted="false">Remote url returned error %d - %s</string>
+    <string name="unexpected_response">Unexpected response returned from the server</string>
+    <string name="connection_timeout">Connection timeout</string>
+
 </resources>

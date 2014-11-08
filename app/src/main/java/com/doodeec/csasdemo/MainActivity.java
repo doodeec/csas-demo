@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.doodeec.csasdemo.Model.BankAccount;
+import com.doodeec.csasdemo.REST.RestService;
+import com.doodeec.csasdemo.ServerRequest.ErrorResponse;
+import com.doodeec.csasdemo.ServerRequest.ResponseListener.ServerResponseListener;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -12,6 +17,28 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        RestService.getAccounts(new ServerResponseListener<BankAccount[]>() {
+            @Override
+            public void onSuccess(BankAccount[] responseObject) {
+
+            }
+
+            @Override
+            public void onError(ErrorResponse error) {
+
+            }
+
+            @Override
+            public void onProgress(Integer progress) {
+
+            }
+
+            @Override
+            public void onCancelled() {
+
+            }
+        });
     }
 
 
