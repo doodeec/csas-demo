@@ -60,7 +60,6 @@ public class RestService {
                 Log.d("CSAS", "Accounts loaded");
 
                 try {
-                    //TODO key
                     BankAccount[] accountList = new BankAccount[accountListDefinition.length()];
 
                     for (int i = 0; i < accountListDefinition.length(); i++) {
@@ -95,13 +94,14 @@ public class RestService {
         return request;
     }
 
-    public static ServerRequestInterface getAccountDetail(String accId, final ServerResponseListener<BankAccount[]> responseListener) {
+    public static ServerRequestInterface getAccountDetail(String accId, final ServerResponseListener<BankAccount> responseListener) {
         String url = String.format(DETAIL_URL, accId);
 
         ServerRequest request = new ServerRequest(url, ServerRequest.RequestType.GET, new JSONServerResponseListener() {
             @Override
-            public void onSuccess(JSONObject accountListDefinition) {
+            public void onSuccess(JSONObject accountDefinition) {
                 Log.d("CSAS", "Account detail loaded");
+                responseListener.onSuccess(new BankAccount(accountDefinition));
             }
 
             @Override
