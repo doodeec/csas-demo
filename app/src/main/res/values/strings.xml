@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">CsasDemo</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_sync">Synchronize</string>
 
     <!--account-->
     <string name="acc_id_hint">Account ID</string>

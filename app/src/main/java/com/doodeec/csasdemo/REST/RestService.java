@@ -17,6 +17,8 @@ import org.json.JSONObject;
 
 /**
  * Created by Dusan Doodeec Bartos on 8.11.2014.
+ *
+ * Rest service for connecting to Server API
  */
 public class RestService {
 
@@ -35,6 +37,15 @@ public class RestService {
     private static final String SIZE_KEY = "size";
 
 
+    /**
+     * Creates url according its parameters
+     *
+     * @param type  request type
+     * @param accId account number ID
+     * @param page  page to display
+     * @param size  page size to load
+     * @return built url
+     */
     private static String buildUrl(RequestType type, String accId, Integer page, Integer size) {
         Uri.Builder builder = new Uri.Builder();
 
@@ -60,7 +71,7 @@ public class RestService {
     }
 
     /**
-     * Loads account list
+     * Loads list of accounts
      *
      * @param responseListener response listener
      * @return request interface
@@ -108,6 +119,13 @@ public class RestService {
         return request;
     }
 
+    /**
+     * Loads bank account details
+     *
+     * @param accId            account number ID
+     * @param responseListener response listener
+     * @return request interface
+     */
     public static ServerRequestInterface getAccountDetail(String accId, final ServerResponseListener<BankAccount> responseListener) {
         String url = buildUrl(RequestType.DETAIL, accId, null, null);
 
@@ -139,6 +157,15 @@ public class RestService {
         return request;
     }
 
+    /**
+     * Loads account transactions
+     *
+     * @param accId            account number ID
+     * @param page             page to display
+     * @param pageSize         page size to load
+     * @param responseListener response listener
+     * @return request interface
+     */
     public static ServerRequestInterface getAccountTransactions(String accId, final Integer page, Integer pageSize,
                                                                 final ServerResponseListener<Transaction[]> responseListener) {
         String url = buildUrl(RequestType.TRANSACTIONS, accId, page, pageSize);

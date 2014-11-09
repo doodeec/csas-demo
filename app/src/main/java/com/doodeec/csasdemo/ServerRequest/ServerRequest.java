@@ -23,7 +23,7 @@ import java.net.URL;
 /**
  * Created by Dusan Doodeec Bartos on 20.10.2014.
  *
- * REST request
+ * Asynchronous Server request
  */
 public class ServerRequest extends AsyncTask<Void, Integer, Void> implements ServerRequestInterface {
 
@@ -79,11 +79,11 @@ public class ServerRequest extends AsyncTask<Void, Integer, Void> implements Ser
     private String mErrorMessage;
 
     /**
-     * Constructor for Server request with Bitmap response listener
+     * Constructor for Server request with Array response listener
      *
      * @param url                server url
      * @param type               request type
-     * @param onResponseListener bitmap response listener
+     * @param onResponseListener array response listener
      */
     public ServerRequest(String url, RequestType type, ArrayServerResponseListener onResponseListener) {
         this.mType = type;

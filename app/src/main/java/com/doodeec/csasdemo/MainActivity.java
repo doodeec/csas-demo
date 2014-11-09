@@ -1,8 +1,10 @@
 package com.doodeec.csasdemo;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +28,8 @@ public class MainActivity extends ActionBarActivity {
     private final AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            openAccountDetail(mAdapter.getItem(position));
+            // triggers opening account detail
+            openAccountDetail(mAdapter.getItem(position).getId());
         }
     };
 
@@ -45,30 +48,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        RestService.getAccounts(new ServerResponseListener<BankAccount[]>() {
-            @Override
-            public void onSuccess(BankAccount[] accountList) {
-                mAdapter = new AccountListAdapter(MainActivity.this, accountList);
-                mListFragment.getListView().setAdapter(mAdapter);
-                mListFragment.getListView().setOnItemClickListener(mItemClickListener);
-            }
-
-            @Override
-            public void onError(ErrorResponse error) {
-
-            }
-
-            @Override
-            public void onProgress(Integer progress) {
-
-            }
-
-            @Override
-            public void onCancelled() {
-
-            }
-        });
+        loadList();
     }
 
     @Override
@@ -80,27 +60,75 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (item.getItemId() == R.id.action_sync) {
+            loadList();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void openAccountDetail(BankAccount account) {
-        AccountDetailFragment detailFragment = new AccountDetailFragment();
-        detailFragment.setAccount(account.getId());
+    /**
+     * Loads account list and initializes listView adapter
+     */
+    private void loadList() {
+        RestService.getAccounts(new ServerResponseListener<BankAccount[]>() {
+            @Override
+            public void onSuccess(BankAccount[] accountList) {
+                mAdapter = new AccountListAdapter(MainActivity.this, accountList);
+                mListFragment.getListView().setAdapter(mAdapter);
+                mListFragment.getListView().setOnItemClickListener(mItemClickListener);
+            }
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-        transaction.add(android.R.id.content, detailFragment, DETAIL_FRG_TAG);
-        transaction.addToBackStack(DETAIL_FRG_TAG);
-        transaction.commit();
+            @Override
+            public void onError(ErrorResponse error) {
+                Log.e("CSAS", "Accounts list loading error: " + error.getMessage());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Error").setMessage("Accounts list could not be loaded").show();
+            }
+
+            @Override
+            public void onProgress(Integer progress) {}
+
+            @Override
+            public void onCancelled() {}
+        });
+    }
+
+    /**
+     * Opens account detail in a new fragment
+     *
+     * @param accountId ID of account to display
+     */
+    private void openAccountDetail(String accountId) {
+        RestService.getAccountDetail(accountId, new ServerResponseListener<BankAccount>() {
+            @Override
+            public void onSuccess(BankAccount account) {
+                // display detail fragment
+                AccountDetailFragment detailFragment = new AccountDetailFragment();
+                detailFragment.setAccount(account);
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_right, R.anim.slide_from_right, R.anim.slide_to_right);
+                transaction.add(android.R.id.content, detailFragment, DETAIL_FRG_TAG);
+                transaction.addToBackStack(DETAIL_FRG_TAG);
+                transaction.commit();
+            }
+
+            @Override
+            public void onError(ErrorResponse error) {
+                Log.e("CSAS", "Account detail loading error: " + error.getMessage());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Error").setMessage("Account dialog could not be loaded").show();
+            }
+
+            @Override
+            public void onProgress(Integer progress) {}
+
+            @Override
+            public void onCancelled() {}
+        });
     }
 }

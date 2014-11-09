@@ -18,14 +18,17 @@ import com.doodeec.csasdemo.ServerRequest.ResponseListener.ServerResponseListene
 
 /**
  * Created by Dusan Doodeec Bartos on 8.11.2014.
+ *
+ * Acount Detail fragment, displays details about bank account
  */
 public class AccountDetailFragment extends Fragment {
 
-    private String mAccountId;
     private BankAccount mAccount;
     private TextView mAccIdText;
     private TextView mAccNameText;
     private TextView mAccDescText;
+    private TextView mBalanceText;
+    private TextView mCurrencyText;
     private ImageView mExpandBtn;
     private final View.OnClickListener mExpandListener = new View.OnClickListener() {
         @Override
@@ -34,8 +37,13 @@ public class AccountDetailFragment extends Fragment {
         }
     };
 
-    public void setAccount(String accountId) {
-        mAccountId = accountId;
+    /**
+     * Sets id of account to display detail of
+     *
+     * @param account account to display
+     */
+    public void setAccount(BankAccount account) {
+        mAccount = account;
     }
 
     @SuppressWarnings("InflateParams")
@@ -45,9 +53,12 @@ public class AccountDetailFragment extends Fragment {
         mAccIdText = (TextView) v.findViewById(R.id.acc_id);
         mAccNameText = (TextView) v.findViewById(R.id.acc_name);
         mAccDescText = (TextView) v.findViewById(R.id.acc_description);
+        mBalanceText = (TextView) v.findViewById(R.id.acc_balance);
+        mCurrencyText = (TextView) v.findViewById(R.id.acc_currency);
         mExpandBtn = (ImageView) v.findViewById(R.id.expand_balance);
 
-        if (mAccIdText == null || mAccNameText == null || mAccDescText == null || mExpandBtn == null) {
+        if (mAccIdText == null || mAccNameText == null || mAccDescText == null || mExpandBtn == null ||
+                mBalanceText == null || mCurrencyText == null) {
             throw new AssertionError("Account detail has invalid layout");
         }
 
@@ -57,39 +68,26 @@ public class AccountDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RestService.getAccountDetail(mAccountId, new ServerResponseListener<BankAccount>() {
-            @Override
-            public void onSuccess(BankAccount account) {
-                mAccount = account;
-                setData();
-                mExpandBtn.setOnClickListener(mExpandListener);
-            }
-
-            @Override
-            public void onError(ErrorResponse error) {
-
-            }
-
-            @Override
-            public void onProgress(Integer progress) {
-
-            }
-
-            @Override
-            public void onCancelled() {
-
-            }
-        });
+        setData();
+        mExpandBtn.setOnClickListener(mExpandListener);
     }
 
+    /**
+     * Sets data to the view
+     */
     public void setData() {
         mAccIdText.setText(mAccount.getId());
         mAccNameText.setText(mAccount.getName());
         mAccDescText.setText(mAccount.getDescription());
+        mBalanceText.setText(String.format("%,.2f", mAccount.getBalance()));
+        mCurrencyText.setText(mAccount.getCurrency());
     }
 
+    /**
+     * Loads account transactions
+     */
     private void expandTransactions() {
-        RestService.getAccountTransactions(mAccountId, null, null, new ServerResponseListener<Transaction[]>() {
+        RestService.getAccountTransactions(mAccount.getId(), null, null, new ServerResponseListener<Transaction[]>() {
             @Override
             public void onSuccess(Transaction[] transactions) {
 

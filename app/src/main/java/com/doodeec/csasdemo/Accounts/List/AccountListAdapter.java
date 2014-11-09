@@ -12,6 +12,8 @@ import com.doodeec.csasdemo.R;
 
 /**
  * Created by Dusan Doodeec Bartos on 8.11.2014.
+ *
+ * Bank Account list adapter
  */
 public class AccountListAdapter extends ArrayAdapter<BankAccount> {
 
@@ -40,6 +42,8 @@ public class AccountListAdapter extends ArrayAdapter<BankAccount> {
         holder = (AccountItemHolder) convertView.getTag();
         holder.setId(account.getId());
         holder.setName(account.getName());
+        holder.setBalance(account.getBalance());
+        holder.setCurrency(account.getCurrency());
 
         return convertView;
     }
@@ -47,12 +51,16 @@ public class AccountListAdapter extends ArrayAdapter<BankAccount> {
     private class AccountItemHolder {
         protected TextView mIdTextView;
         protected TextView mNameTextView;
+        protected TextView mBalanceTextView;
+        protected TextView mCurrencyTextView;
 
         protected AccountItemHolder(View view) {
             mIdTextView = (TextView) view.findViewById(R.id.account_id);
             mNameTextView = (TextView) view.findViewById(R.id.account_name);
+            mBalanceTextView = (TextView) view.findViewById(R.id.account_balance);
+            mCurrencyTextView = (TextView) view.findViewById(R.id.account_currency);
 
-            if (mIdTextView == null || mNameTextView == null) {
+            if (mIdTextView == null || mNameTextView == null || mBalanceTextView == null || mCurrencyTextView == null) {
                 throw new AssertionError("Account item holder has invalid layout");
             }
         }
@@ -63,6 +71,14 @@ public class AccountListAdapter extends ArrayAdapter<BankAccount> {
 
         protected void setName(String name) {
             mNameTextView.setText(name);
+        }
+
+        protected void setBalance(Double balance) {
+            mBalanceTextView.setText(String.format("%,.2f", balance));
+        }
+
+        protected void setCurrency(String currency) {
+            mCurrencyTextView.setText(currency);
         }
     }
 }

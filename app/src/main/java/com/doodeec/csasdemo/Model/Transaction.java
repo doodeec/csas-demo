@@ -6,6 +6,8 @@ import java.util.Date;
 
 /**
  * Created by Dusan Doodeec Bartos on 9.11.2014.
+ *
+ * Account transaction object model
  */
 public class Transaction extends JSONParser {
 
