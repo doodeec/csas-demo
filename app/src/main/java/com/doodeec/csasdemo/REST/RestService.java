@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.doodeec.csasdemo.Model.BankAccount;
+import com.doodeec.csasdemo.Model.Transaction;
 import com.doodeec.csasdemo.ServerRequest.ErrorResponse;
 import com.doodeec.csasdemo.ServerRequest.ResponseListener.ArrayServerResponseListener;
 import com.doodeec.csasdemo.ServerRequest.ResponseListener.JSONServerResponseListener;
@@ -19,30 +20,41 @@ import org.json.JSONObject;
  */
 public class RestService {
 
-    private static final String BASE_URL = "http://private-anon-805bdefcb-csastransparentaccounts.apiary-mock.com/";
-    private static final String LIST_URL = BASE_URL + "transparentAccounts/accounts";
-    private static final String DETAIL_URL = BASE_URL + "transparentAccounts/accounts/%s";
-    private static final String TRANSACTIONS_URL = BASE_URL + "transparentAccounts/accounts";
+    private enum RequestType {
+        LIST, DETAIL, TRANSACTIONS
+    }
+
+    private static final String BASE_PATH = "transparentAccounts";
+    private static final String LIST_PATH = "accounts";
+    private static final String DETAIL_PATH = "accounts";
+    private static final String TRANSACTIONS_PATH = "transactions";
 
     private static final String SCHEME = "http";
-    private static final String PATH_KEY = "movies";
+    private static final String AUTHORITY = "private-anon-805bdefcb-csastransparentaccounts.apiary-mock.com";
     private static final String PAGE_KEY = "page";
-    //    private static final int PAGE_LIMIT = 5;
-    private static final String MOCK_AUTHORITY = "api.doodeec.com";
+    private static final String SIZE_KEY = "size";
 
-    /**
-     * Builds API url for specific page of movie list
-     *
-     * @param page page to load
-     * @return API url
-     */
-    private static String buildPathForPage(int page) {
+
+    private static String buildUrl(RequestType type, String accId, Integer page, Integer size) {
         Uri.Builder builder = new Uri.Builder();
 
-        builder.scheme(SCHEME)
-                .authority(MOCK_AUTHORITY)
-                .appendPath(PATH_KEY)
-                .appendQueryParameter(PAGE_KEY, String.valueOf(page));
+        builder.scheme(SCHEME).authority(AUTHORITY).appendPath(BASE_PATH);
+
+        switch (type) {
+            case LIST:
+                builder.appendPath(LIST_PATH);
+                break;
+            case DETAIL:
+                builder.appendPath(DETAIL_PATH).appendPath(accId);
+                break;
+            case TRANSACTIONS:
+                builder.appendPath(TRANSACTIONS_PATH).appendPath(accId);
+                if (page != null) builder.appendQueryParameter(PAGE_KEY, String.valueOf(page));
+                if (size != null) builder.appendQueryParameter(SIZE_KEY, String.valueOf(size));
+                break;
+            default:
+                break;
+        }
 
         return builder.build().toString();
     }
@@ -54,7 +66,9 @@ public class RestService {
      * @return request interface
      */
     public static ServerRequestInterface getAccounts(final ServerResponseListener<BankAccount[]> responseListener) {
-        ServerRequest request = new ServerRequest(LIST_URL, ServerRequest.RequestType.GET, new ArrayServerResponseListener() {
+        String url = buildUrl(RequestType.LIST, null, null, null);
+
+        ServerRequest request = new ServerRequest(url, ServerRequest.RequestType.GET, new ArrayServerResponseListener() {
             @Override
             public void onSuccess(JSONArray accountListDefinition) {
                 Log.d("CSAS", "Accounts loaded");
@@ -95,7 +109,7 @@ public class RestService {
     }
 
     public static ServerRequestInterface getAccountDetail(String accId, final ServerResponseListener<BankAccount> responseListener) {
-        String url = String.format(DETAIL_URL, accId);
+        String url = buildUrl(RequestType.DETAIL, accId, null, null);
 
         ServerRequest request = new ServerRequest(url, ServerRequest.RequestType.GET, new JSONServerResponseListener() {
             @Override
@@ -118,6 +132,51 @@ public class RestService {
             @Override
             public void onCancelled() {
                 Log.d("CSAS", "Account detail loading cancelled");
+                responseListener.onCancelled();
+            }
+        });
+        request.execute();
+        return request;
+    }
+
+    public static ServerRequestInterface getAccountTransactions(String accId, final Integer page, Integer pageSize,
+                                                                final ServerResponseListener<Transaction[]> responseListener) {
+        String url = buildUrl(RequestType.TRANSACTIONS, accId, page, pageSize);
+
+        ServerRequest request = new ServerRequest(url, ServerRequest.RequestType.GET, new JSONServerResponseListener() {
+            @Override
+            public void onSuccess(JSONObject accountDefinition) {
+                Log.d("CSAS", "Account transactions loaded for page " + String.valueOf(page));
+
+                try {
+                    JSONArray listDefinition = accountDefinition.getJSONArray(Transaction.TRANSACTIONS_KEY);
+                    Transaction[] transactionList = new Transaction[listDefinition.length()];
+
+                    for (int i = 0; i < listDefinition.length(); i++) {
+                        transactionList[i] = new Transaction(listDefinition.getJSONObject(i));
+                    }
+
+                    responseListener.onSuccess(transactionList);
+                } catch (Exception e) {
+                    Log.e("CSAS", "Transaction list has invalid structure: " + e.getMessage());
+                    responseListener.onError(new ErrorResponse(e.getMessage()));
+                }
+            }
+
+            @Override
+            public void onError(ErrorResponse error) {
+                Log.e("CSAS", "Account transactions can not be loaded: " + error.getMessage());
+                responseListener.onError(error);
+            }
+
+            @Override
+            public void onProgress(Integer progress) {
+                responseListener.onProgress(progress);
+            }
+
+            @Override
+            public void onCancelled() {
+                Log.d("CSAS", "Account transactions loading cancelled");
                 responseListener.onCancelled();
             }
         });

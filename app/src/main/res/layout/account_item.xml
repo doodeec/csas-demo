@@ -11,13 +11,40 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/big_size"
         android:textStyle="bold"
-        android:hint="Account ID"/>
+        android:hint="@string/acc_id_hint"/>
 
     <TextView
         android:id="@+id/account_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/normal_size"
-        android:hint="Account name"/>
+        android:hint="@string/acc_name_hint"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/account_balance"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="@dimen/big_size"
+            android:layout_marginRight="@dimen/padding"
+            android:layout_marginEnd="@dimen/padding"
+            android:gravity="end"
+            android:textStyle="bold"
+            android:hint="@string/acc_balance_hint"/>
+
+        <TextView
+            android:id="@+id/account_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/normal_size"
+            android:gravity="bottom"
+            android:textStyle="bold"
+            android:hint="@string/acc_currency_hint"/>
+    </LinearLayout>
 
 </LinearLayout>

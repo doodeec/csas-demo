@@ -25,6 +25,7 @@ public class AccountListAdapter extends ArrayAdapter<BankAccount> {
         mAccounts = accounts;
     }
 
+    @SuppressWarnings("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final BankAccount account = mAccounts[position];

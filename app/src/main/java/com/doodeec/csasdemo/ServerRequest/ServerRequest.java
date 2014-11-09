@@ -1,6 +1,7 @@
 package com.doodeec.csasdemo.ServerRequest;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.doodeec.csasdemo.Helper;
 import com.doodeec.csasdemo.R;
@@ -110,7 +111,8 @@ public class ServerRequest extends AsyncTask<Void, Integer, Void> implements Ser
         HttpURLConnection connection;
         publishProgress(PROGRESS_IDLE);
 
-        /// try to parse url string to URL object and open HTTP connection
+        Log.d("SERVER REQUEST", mUrl);
+        // try to parse url string to URL object and open HTTP connection
         try {
             URL url = new URL(mUrl);
             connection = (HttpURLConnection) url.openConnection();

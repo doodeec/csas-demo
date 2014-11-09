@@ -2,8 +2,15 @@
 <resources>
 
     <string name="app_name">CsasDemo</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <!--account-->
+    <string name="acc_id_hint">Account ID</string>
+    <string name="acc_name_hint">Account Name</string>
+    <string name="acc_desc_hint">Account Description</string>
+    <string name="acc_balance_hint">123456</string>
+    <string name="acc_currency_hint">CZK</string>
+    <string name="acc_expand_transactions">Expand account transactions</string>
 
     <!--server request-->
     <string name="server_error" formatted="false">Remote url returned error %d - %s</string>

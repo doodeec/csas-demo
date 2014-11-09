@@ -5,6 +5,7 @@
 
     <dimen name="padding">16dp</dimen>
 
+    <dimen name="xbig_size">26sp</dimen>
     <dimen name="big_size">20sp</dimen>
     <dimen name="normal_size">14sp</dimen>
 </resources>
