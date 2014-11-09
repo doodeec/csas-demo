@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.doodeec.csasdemo.Model.BankAccount;
@@ -30,10 +31,12 @@ public class AccountDetailFragment extends Fragment {
     private TextView mBalanceText;
     private TextView mCurrencyText;
     private ImageView mExpandBtn;
+    private LinearLayout mExpandArea;
+    private TransactionsListFragment mTransactionList;
     private final View.OnClickListener mExpandListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            expandTransactions();
+//            expandTransactions();
         }
     };
 
@@ -56,6 +59,9 @@ public class AccountDetailFragment extends Fragment {
         mBalanceText = (TextView) v.findViewById(R.id.acc_balance);
         mCurrencyText = (TextView) v.findViewById(R.id.acc_currency);
         mExpandBtn = (ImageView) v.findViewById(R.id.expand_balance);
+        mExpandArea = (LinearLayout) v.findViewById(R.id.expand_section);
+
+        mTransactionList = (TransactionsListFragment) getFragmentManager().findFragmentById(R.id.transaction_list);
 
         if (mAccIdText == null || mAccNameText == null || mAccDescText == null || mExpandBtn == null ||
                 mBalanceText == null || mCurrencyText == null) {
@@ -69,7 +75,8 @@ public class AccountDetailFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setData();
-        mExpandBtn.setOnClickListener(mExpandListener);
+//        mExpandBtn.setOnClickListener(mExpandListener);
+//        mExpandArea.setOnTouchListener(mSlideListener);
     }
 
     /**
