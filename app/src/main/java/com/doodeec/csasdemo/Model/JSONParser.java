@@ -24,6 +24,16 @@ public class JSONParser {
         return value;
     }
 
+    protected static Long getLongForKey(JSONObject jsonObject, String key) {
+        Long value = null;
+        try {
+            value = jsonObject.getLong(key);
+        } catch (JSONException e) {
+            Log.e("Error reading Integer", e.getMessage() + " in object: " + jsonObject.toString());
+        }
+        return value;
+    }
+
     protected static String getStringForKey(JSONObject jsonObject, String key) {
         String value = null;
         try {

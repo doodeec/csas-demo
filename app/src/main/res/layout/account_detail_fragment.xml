@@ -39,6 +39,86 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/normal_size"
             android:hint="@string/acc_iban_hint"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/padding">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="@dimen/normal_size"
+                android:text="@string/acc_transparent_from"/>
+
+            <TextView
+                android:id="@+id/acc_transparent_from"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/normal_size"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/padding">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="@dimen/normal_size"
+                android:text="@string/acc_transparent_to"/>
+
+            <TextView
+                android:id="@+id/acc_transparent_to"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/normal_size"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/padding">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="@dimen/normal_size"
+                android:text="@string/acc_publication_to"/>
+
+            <TextView
+                android:id="@+id/acc_publication_to"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/normal_size"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/padding">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="@dimen/normal_size"
+                android:text="@string/acc_actualization"/>
+
+            <TextView
+                android:id="@+id/acc_actualized"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/normal_size"/>
+        </LinearLayout>
     </LinearLayout>
 
     <SlidingDrawer
@@ -91,7 +171,7 @@
         <FrameLayout
             android:id="@id/transactions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
     </SlidingDrawer>
 
 </RelativeLayout>

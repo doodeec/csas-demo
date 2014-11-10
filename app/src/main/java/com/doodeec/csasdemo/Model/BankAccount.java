@@ -56,7 +56,7 @@ public class BankAccount extends JSONParser {
         mTransparentFrom = Helper.parseDateFromString(getStringForKey(accountDefinition, TRANSP_FROM_KEY));
         mTransparentTo = Helper.parseDateFromString(getStringForKey(accountDefinition, TRANSP_TO_KEY));
         mPublicationTo = Helper.parseDateFromString(getStringForKey(accountDefinition, PUBLIC_TO_KEY));
-        mActualizationDate = new Date(getIntForKey(accountDefinition, ACTUALIZATION_KEY));
+        mActualizationDate = new Date(getLongForKey(accountDefinition, ACTUALIZATION_KEY));
     }
 
     public String getId() {
@@ -91,19 +91,19 @@ public class BankAccount extends JSONParser {
         return mBalance;
     }
 
-    public Date getTransparencyFrom() {
-        return mTransparentFrom;
+    public String getTransparencyFrom() {
+        return String.valueOf(android.text.format.DateFormat.format("dd. MM. yyyy", mTransparentFrom));
     }
 
-    public Date getTransparencyTo() {
-        return mTransparentTo;
+    public String getTransparencyTo() {
+        return String.valueOf(android.text.format.DateFormat.format("dd. MM. yyyy", mTransparentTo));
     }
 
-    public Date getPublicationTo() {
-        return mPublicationTo;
+    public String getPublicationTo() {
+        return String.valueOf(android.text.format.DateFormat.format("dd. MM. yyyy", mPublicationTo));
     }
 
-    public Date getActualizationDate() {
-        return mActualizationDate;
+    public String getActualizationDate() {
+        return String.valueOf(android.text.format.DateFormat.format("hh:mm dd. MM. yyyy", mActualizationDate));
     }
 }

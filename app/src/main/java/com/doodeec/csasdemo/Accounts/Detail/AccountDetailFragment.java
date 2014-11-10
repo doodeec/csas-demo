@@ -29,6 +29,10 @@ public class AccountDetailFragment extends Fragment {
     private TextView mIbanText;
     private TextView mBalanceText;
     private TextView mCurrencyText;
+    private TextView mTransparentFromView;
+    private TextView mTransparentToView;
+    private TextView mPublicationView;
+    private TextView mActualizedView;
     private ImageView mArrowView;
     private SlidingDrawer mSlidingDrawer;
 
@@ -67,6 +71,11 @@ public class AccountDetailFragment extends Fragment {
         mBalanceText = (TextView) v.findViewById(R.id.acc_balance);
         mCurrencyText = (TextView) v.findViewById(R.id.acc_currency);
         mArrowView = (ImageView) v.findViewById(R.id.expand_balance);
+
+        mTransparentFromView = (TextView) v.findViewById(R.id.acc_transparent_from);
+        mTransparentToView = (TextView) v.findViewById(R.id.acc_transparent_to);
+        mPublicationView = (TextView) v.findViewById(R.id.acc_publication_to);
+        mActualizedView = (TextView) v.findViewById(R.id.acc_actualized);
 
         mSlidingDrawer = (SlidingDrawer) v.findViewById(R.id.sliding_drawer);
 
@@ -107,5 +116,10 @@ public class AccountDetailFragment extends Fragment {
 
         mBalanceText.setText(String.format("%,.2f", mAccount.getBalance()));
         mCurrencyText.setText(mAccount.getCurrency());
+
+        mTransparentFromView.setText(mAccount.getTransparencyFrom());
+        mTransparentToView.setText(mAccount.getTransparencyTo());
+        mPublicationView.setText(mAccount.getPublicationTo());
+        mActualizedView.setText(mAccount.getActualizationDate());
     }
 }

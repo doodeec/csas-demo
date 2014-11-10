@@ -18,6 +18,8 @@ import java.util.List;
  */
 public class TransactionListAdapter extends LazyListAdapter<Transaction> {
 
+    private static final String UNAVAILABLE_SENDER = "Unavailable";
+
     public TransactionListAdapter(List<Transaction> transactions, TransactionListFragment list) {
         super(transactions, list);
     }
@@ -47,8 +49,10 @@ public class TransactionListAdapter extends LazyListAdapter<Transaction> {
             holder.setSender(transaction.getSenderName());
         } else if(transaction.getSenderDescription() != null) {
             holder.setSender(transaction.getSenderDescription());
-        } else {
+        } else if (transaction.getSender() != null) {
             holder.setSender(transaction.getSender());
+        } else {
+            holder.setSender(UNAVAILABLE_SENDER);
         }
 
         return v;

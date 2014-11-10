@@ -15,6 +15,11 @@
     <string name="acc_sender_hint">Sender</string>
     <string name="acc_date_hint">Valuation Date</string>
 
+    <string name="acc_transparent_from">Transparent from:</string>
+    <string name="acc_transparent_to">Transparent to:</string>
+    <string name="acc_publication_to">Publication to:</string>
+    <string name="acc_actualization">Last operation:</string>
+
     <!--server request-->
     <string name="server_error_msg">Server error</string>
     <string name="server_error" formatted="false">Remote url returned error %d - %s</string>
