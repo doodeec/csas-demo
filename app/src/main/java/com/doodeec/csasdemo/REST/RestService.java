@@ -105,11 +105,6 @@ public class RestService {
             }
 
             @Override
-            public void onProgress(Integer progress) {
-                responseListener.onProgress(progress);
-            }
-
-            @Override
             public void onCancelled() {
                 Log.d("CSAS", "Accounts loading cancelled");
                 responseListener.onCancelled();
@@ -140,11 +135,6 @@ public class RestService {
             public void onError(ErrorResponse error) {
                 Log.e("CSAS", "Account detail can not be loaded: " + error.getMessage());
                 responseListener.onError(error);
-            }
-
-            @Override
-            public void onProgress(Integer progress) {
-                responseListener.onProgress(progress);
             }
 
             @Override
@@ -194,11 +184,6 @@ public class RestService {
             public void onError(ErrorResponse error) {
                 Log.e("CSAS", "Account transactions can not be loaded: " + error.getMessage());
                 responseListener.onError(error);
-            }
-
-            @Override
-            public void onProgress(Integer progress) {
-                responseListener.onProgress(progress);
             }
 
             @Override

@@ -89,9 +89,6 @@ public class MainActivity extends ActionBarActivity {
             }
 
             @Override
-            public void onProgress(Integer progress) {}
-
-            @Override
             public void onCancelled() {}
         });
     }
@@ -123,9 +120,6 @@ public class MainActivity extends ActionBarActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Error").setMessage("Account dialog could not be loaded").show();
             }
-
-            @Override
-            public void onProgress(Integer progress) {}
 
             @Override
             public void onCancelled() {}

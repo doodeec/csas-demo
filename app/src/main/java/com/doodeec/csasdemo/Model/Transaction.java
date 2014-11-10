@@ -1,5 +1,7 @@
 package com.doodeec.csasdemo.Model;
 
+import com.doodeec.csasdemo.Helper;
+
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -29,7 +31,7 @@ public class Transaction extends JSONParser {
     private String mType;
     private String mSenderName;
     private Date mDueDate;
-    private Date mvaluationDate;
+    private Date mValuationDate;
     private TransactionAmount mAmount;
     private AccountEntity mSender;
     private AccountEntity mReceiver;
@@ -37,8 +39,8 @@ public class Transaction extends JSONParser {
     public Transaction(JSONObject transactionDefinition) {
         mType = getStringForKey(transactionDefinition, TYPE_KEY);
         mSenderName = getStringForKey(transactionDefinition, SENDER_NAME_KEY);
-//        mDueDate = new Date(getStringForKey(transactionDefinition, DUE_DATE_KEY));
-//        mvaluationDate = new Date(getStringForKey(transactionDefinition, VALUATION_DATE_KEY));
+        mDueDate = Helper.parseDateFromString(getStringForKey(transactionDefinition, DUE_DATE_KEY));
+        mValuationDate = Helper.parseDateFromString(getStringForKey(transactionDefinition, VALUATION_DATE_KEY));
 
         mAmount = new TransactionAmount(getObjectForKey(transactionDefinition, AMOUNT_KEY));
         mSender = new AccountEntity(getObjectForKey(transactionDefinition, SENDER_KEY));
@@ -61,15 +63,33 @@ public class Transaction extends JSONParser {
         return mAmount.mCurrency;
     }
 
+    public String getSenderDescription() {
+        return mSender.mDescription;
+    }
+
+    public String getSender() {
+        return mSender.mIban;
+    }
+
+    public String getValuationDate() {
+        return String.valueOf(android.text.format.DateFormat.format("dd. MM. yyyy", mValuationDate));
+    }
+
     private class AccountEntity {
         protected String mConstantSymbol;
         protected String mDescription;
         protected String mIban;
 
         public AccountEntity(JSONObject entityDefinition) {
-            mConstantSymbol = getStringForKey(entityDefinition, CONSTANT_SYM_KEY);
-            mDescription = getStringForKey(entityDefinition, DESC_KEY);
-            mIban = getStringForKey(entityDefinition, IBAN_KEY);
+            if (entityDefinition.has(CONSTANT_SYM_KEY)) {
+                mConstantSymbol = getStringForKey(entityDefinition, CONSTANT_SYM_KEY);
+            }
+            if (entityDefinition.has(DESC_KEY)) {
+                mDescription = getStringForKey(entityDefinition, DESC_KEY);
+            }
+            if (entityDefinition.has(IBAN_KEY)) {
+                mIban = getStringForKey(entityDefinition, IBAN_KEY);
+            }
         }
     }
 

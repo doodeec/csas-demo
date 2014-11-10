@@ -1,5 +1,7 @@
 package com.doodeec.csasdemo.Model;
 
+import com.doodeec.csasdemo.Helper;
+
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -51,10 +53,9 @@ public class BankAccount extends JSONParser {
         mBankCode = getIntForKey(accountDefinition, BANK_CODE_KEY);
         mBalance = getDoubleForKey(accountDefinition, BALANCE_KEY);
 
-        //TODO parse data string to date
-//        mTransparentFrom = new Date(getStringForKey(accountDefinition, TRANSP_FROM_KEY));
-//        mTransparentTo = new Date(getStringForKey(accountDefinition, TRANSP_TO_KEY));
-//        mPublicationTo = new Date(getStringForKey(accountDefinition, PUBLIC_TO_KEY));
+        mTransparentFrom = Helper.parseDateFromString(getStringForKey(accountDefinition, TRANSP_FROM_KEY));
+        mTransparentTo = Helper.parseDateFromString(getStringForKey(accountDefinition, TRANSP_TO_KEY));
+        mPublicationTo = Helper.parseDateFromString(getStringForKey(accountDefinition, PUBLIC_TO_KEY));
         mActualizationDate = new Date(getIntForKey(accountDefinition, ACTUALIZATION_KEY));
     }
 

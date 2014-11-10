@@ -44,17 +44,6 @@ public class ServerRequest extends AsyncTask<Void, Integer, Void> implements Ser
         ARRAY, JSON
     }
 
-    // asyncTask progress
-    private static final int PROGRESS_IDLE = 0;
-    private static final int PROGRESS_OPENED = 10;
-    private static final int PROGRESS_CONNECTED = 20;
-    private static final int PROGRESS_RESPONSE_CODE = 40;
-    private static final int PROGRESS_RESPONSE_TYPE = 50;
-    private static final int PROGRESS_CONTENT = 70;
-    private static final int PROGRESS_CONNECTION_CLOSE = 80;
-    private static final int PROGRESS_DISCONNECTING = 90;
-    private static final int PROGRESS_DONE = 100;
-
     // response headers
     private static final String REQ_CHARSET_KEY = "Accept-Charset";
     private static final String REQ_CHARSET_VALUE = "UTF-8";
@@ -109,7 +98,6 @@ public class ServerRequest extends AsyncTask<Void, Integer, Void> implements Ser
     @Override
     protected Void doInBackground(Void... params) {
         HttpURLConnection connection;
-        publishProgress(PROGRESS_IDLE);
 
         Log.d("SERVER REQUEST", mUrl);
         // try to parse url string to URL object and open HTTP connection
@@ -120,10 +108,6 @@ public class ServerRequest extends AsyncTask<Void, Integer, Void> implements Ser
             this.mErrorMessage = e.getLocalizedMessage();
             return null;
         }
-
-        publishProgress(PROGRESS_OPENED);
-
-//        connection.setUseCaches(false);
 
         // set connection header properties
         connection.setRequestProperty(REQ_CHARSET_KEY, REQ_CHARSET_VALUE);
@@ -143,7 +127,6 @@ public class ServerRequest extends AsyncTask<Void, Integer, Void> implements Ser
 
         try {
             connection.connect();
-            publishProgress(PROGRESS_CONNECTED);
 
             // Checking for cancelled flag in major thread breakpoints
             if (isCancelled()) {
@@ -152,7 +135,6 @@ public class ServerRequest extends AsyncTask<Void, Integer, Void> implements Ser
             }
 
             int status = connection.getResponseCode();
-            publishProgress(PROGRESS_RESPONSE_CODE);
 
             // Checking for cancelled flag in major thread breakpoints
             if (isCancelled()) {
@@ -172,12 +154,10 @@ public class ServerRequest extends AsyncTask<Void, Integer, Void> implements Ser
             }
 
             String contentType = connection.getContentType();
-            publishProgress(PROGRESS_RESPONSE_TYPE);
 
             InputStream inputStream = null;
             try {
                 inputStream = connection.getInputStream();
-                publishProgress(PROGRESS_CONTENT);
 
                 if (isJSON(contentType)) {
                     switch (mResponseType) {
@@ -194,7 +174,6 @@ public class ServerRequest extends AsyncTask<Void, Integer, Void> implements Ser
                     this.mErrorMessage = Helper.getString(R.string.unexpected_response);
                 }
             } finally {
-                publishProgress(PROGRESS_CONNECTION_CLOSE);
                 if (inputStream != null) {
                     inputStream.close();
                 }
@@ -208,27 +187,10 @@ public class ServerRequest extends AsyncTask<Void, Integer, Void> implements Ser
 
             return null;
         } finally {
-            publishProgress(PROGRESS_DISCONNECTING);
             connection.disconnect();
-            publishProgress(PROGRESS_DONE);
         }
 
         return null;
-    }
-
-    @Override
-    protected void onProgressUpdate(Integer... progress) {
-        super.onProgressUpdate();
-        switch (mResponseType) {
-            case ARRAY:
-                mArrayResponseListener.onProgress(progress[0]);
-                break;
-            case JSON:
-                mJSONResponseListener.onProgress(progress[0]);
-                break;
-            default:
-                break;
-        }
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.doodeec.csasdemo;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.graphics.drawable.Drawable;
+
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by Dusan Doodeec Bartos on 26.10.2014.
@@ -10,8 +11,6 @@ import android.net.NetworkInfo;
  * Helper for resource handling
  */
 public class Helper {
-
-    public static final String EMPTY_STRING = "";
 
     /**
      * @param stringId string resource id
@@ -22,22 +21,24 @@ public class Helper {
     }
 
     /**
-     * @param colorId color resource id
-     * @return color
+     * @param drawableId drawable resource id
+     * @return drawable
      */
-    public static int getColor(int colorId) {
-        return AppState.getContext().getResources().getColor(colorId);
+    public static Drawable getDrawable(int drawableId) {
+        return AppState.getContext().getResources().getDrawable(drawableId);
     }
 
     /**
-     * Determines if device is connected to network
-     *
-     * @return true if connected
+     * Parses "YYYY-MM-DD" date format to Date object
+     * @param dateString string to parse
+     * @return date object
      */
-    public static boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) AppState.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+    public static Date parseDateFromString(String dateString) {
+        String[] parts = dateString.split("-");
 
-        return (netInfo != null && netInfo.isConnectedOrConnecting());
+        GregorianCalendar calendar = new GregorianCalendar(Integer.parseInt(parts[0]),
+                Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+
+        return calendar.getTime();
     }
 }

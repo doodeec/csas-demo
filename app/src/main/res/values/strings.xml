@@ -8,13 +8,21 @@
     <string name="acc_id_hint">Account ID</string>
     <string name="acc_name_hint">Account Name</string>
     <string name="acc_desc_hint">Account Description</string>
+    <string name="acc_iban_hint">Account IBAN</string>
     <string name="acc_balance_hint">123456</string>
     <string name="acc_currency_hint">CZK</string>
     <string name="acc_expand_transactions">Expand account transactions</string>
+    <string name="acc_sender_hint">Sender</string>
+    <string name="acc_date_hint">Valuation Date</string>
 
     <!--server request-->
+    <string name="server_error_msg">Server error</string>
     <string name="server_error" formatted="false">Remote url returned error %d - %s</string>
     <string name="unexpected_response">Unexpected response returned from the server</string>
     <string name="connection_timeout">Connection timeout</string>
+
+    <string name="list_end">End of the list</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="repeat_req_msg">Request not successful. Repeat?</string>
 
 </resources>

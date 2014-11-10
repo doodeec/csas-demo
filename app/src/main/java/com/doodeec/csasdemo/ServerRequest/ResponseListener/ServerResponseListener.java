@@ -25,13 +25,6 @@ public interface ServerResponseListener<T> {
     public void onError(ErrorResponse error);
 
     /**
-     * Fires when {@link android.os.AsyncTask#onProgressUpdate(Object[])} is fired
-     *
-     * @param progress progress value in percent
-     */
-    public void onProgress(Integer progress);
-
-    /**
      * Fires when request was cancelled before its fulfillment
      */
     public void onCancelled();
